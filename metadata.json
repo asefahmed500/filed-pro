@@ -1,0 +1,6 @@
+{
+  "name": "FieldForce Pro",
+  "description": "Real-time field employee tracking, geo-attendance, task management, customer check-ins, and file approvals.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
