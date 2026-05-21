@@ -700,7 +700,7 @@ fun FieldForceApp(
                     onDismissRequest = { showCheckInDialog = false },
                     title = { Text("Daily Attendance Check-In") },
                     text = {
-                        Column {
+                        Column(modifier = Modifier.heightIn(max = 350.dp).verticalScroll(rememberScrollState())) {
                             Text("Please confirm your start-of-day details:", style = MaterialTheme.typography.bodySmall)
                             Spacer(modifier = Modifier.height(12.dp))
 
@@ -803,7 +803,7 @@ fun FieldForceApp(
                     onDismissRequest = { showCheckOutDialog = false },
                     title = { Text("End Of Day Shift Summary") },
                     text = {
-                        Column {
+                        Column(modifier = Modifier.heightIn(max = 350.dp).verticalScroll(rememberScrollState())) {
                             OutlinedTextField(
                                 value = notes,
                                 onValueChange = { notes = it },
@@ -864,7 +864,7 @@ fun FieldForceApp(
                     onDismissRequest = { showAddTaskDialog = false },
                     title = { Text("Assign Work Job Task") },
                     text = {
-                        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        Column(modifier = Modifier.heightIn(max = 350.dp).verticalScroll(rememberScrollState())) {
                             OutlinedTextField(
                                 value = taskTitle,
                                 onValueChange = { taskTitle = it },
@@ -970,7 +970,7 @@ fun FieldForceApp(
                     onDismissRequest = { showAddFileDialog = false },
                     title = { Text("Submit File / Document Voucher") },
                     text = {
-                        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        Column(modifier = Modifier.heightIn(max = 350.dp).verticalScroll(rememberScrollState())) {
                             OutlinedTextField(
                                 value = docName,
                                 onValueChange = { docName = it },
@@ -1075,7 +1075,7 @@ fun FieldForceApp(
                     onDismissRequest = { showTaskDetailsId = null },
                     title = { Text(task.title) },
                     text = {
-                        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        Column(modifier = Modifier.heightIn(max = 350.dp).verticalScroll(rememberScrollState())) {
                             Text("Job Specification Info:", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
                             Text(task.description, fontSize = 13.sp)
                             Spacer(modifier = Modifier.height(8.dp))
@@ -1199,7 +1199,7 @@ fun FieldForceApp(
                     onDismissRequest = { showVisitDetailsId = null },
                     title = { Text("Customer Visit Report (Summary)") },
                     text = {
-                        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        Column(modifier = Modifier.heightIn(max = 350.dp).verticalScroll(rememberScrollState())) {
                             Card(
                                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
                             ) {
