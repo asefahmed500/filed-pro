@@ -680,16 +680,10 @@ fun FieldForceApp(
                 )
             }
 
-            // Check-In Details Dialog with Selfie Generator
+            // Check-In Details Dialog with Camera Capture
             if (showCheckInDialog) {
                 var manualNote by remember { mutableStateOf("") }
-                var checkInSelfieOption by remember { mutableStateOf("https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=128&q=80") }
-                val checkInPhotos = listOf(
-                    "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=128&q=80",
-                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=128&q=80",
-                    "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=128&q=80",
-                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=128&q=80"
-                )
+                var checkInSelfieOption by remember { mutableStateOf("") } // Will be captured from camera
 
                 // Geofence calculations
                 // Verify distance to SF central area 37.7749 / -122.4194 vs simulatedLat/Lng
@@ -704,31 +698,8 @@ fun FieldForceApp(
                             Text("Please confirm your start-of-day details:", style = MaterialTheme.typography.bodySmall)
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            // Simulated selfie selector
-                            Text("Take Check-In Selfie photo:", fontWeight = FontWeight.SemiBold, fontSize = 12.sp)
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                checkInPhotos.forEach { url ->
-                                    Box(
-                                        modifier = Modifier
-                                            .size(54.dp)
-                                            .clip(RoundedCornerShape(8.dp))
-                                            .border(
-                                                width = if (checkInSelfieOption == url) 3.dp else 1.dp,
-                                                color = if (checkInSelfieOption == url) MaterialTheme.colorScheme.primary else Color.Gray,
-                                                shape = RoundedCornerShape(8.dp)
-                                            )
-                                            .clickable { checkInSelfieOption = url }
-                                    ) {
-                                        AsyncImage(
-                                            model = url,
-                                            contentDescription = "Selfie options",
-                                            contentScale = ContentScale.Crop,
-                                            modifier = Modifier.fillMaxSize()
-                                        )
-                                    }
-                                }
-                            }
+                            // Camera capture will be triggered for selfie
+                            Text("Check-in selfie will be captured from camera", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Spacer(modifier = Modifier.height(12.dp))
 
                             OutlinedTextField(
@@ -958,13 +929,7 @@ fun FieldForceApp(
                 var fileCategory by remember { mutableStateOf("EXPENSE") }
                 var totalAmount by remember { mutableStateOf("") }
                 var tagsVal by remember { mutableStateOf("") }
-                var selectPhotoUri by remember { mutableStateOf("https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?auto=format&fit=crop&w=128&q=80") }
-
-                val filePhotosSamples = listOf(
-                    "https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?auto=format&fit=crop&w=128&q=80", // receipt bill
-                    "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=128&q=80", // construction delivery pod
-                    "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=128&q=80"  // warehouse/dispatch
-                )
+                var selectPhotoUri by remember { mutableStateOf("") } // Will be captured from camera/gallery
 
                 AlertDialog(
                     onDismissRequest = { showAddFileDialog = false },
@@ -1011,30 +976,7 @@ fun FieldForceApp(
                             )
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            Text("Select Camera Capture Preview Image:", style = MaterialTheme.typography.bodySmall, fontWeight = FontWeight.Bold)
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                                filePhotosSamples.forEach { uri ->
-                                    Box(
-                                        modifier = Modifier
-                                            .size(54.dp)
-                                            .clip(RoundedCornerShape(8.dp))
-                                            .border(
-                                                width = if (selectPhotoUri == uri) 3.dp else 1.dp,
-                                                color = if (selectPhotoUri == uri) MaterialTheme.colorScheme.primary else Color.Gray,
-                                                shape = RoundedCornerShape(8.dp)
-                                            )
-                                            .clickable { selectPhotoUri = uri }
-                                    ) {
-                                        AsyncImage(
-                                            model = uri,
-                                            contentDescription = "Invoice proof photo",
-                                            contentScale = ContentScale.Crop,
-                                            modifier = Modifier.fillMaxSize()
-                                        )
-                                    }
-                                }
-                            }
+                            Text("Document photo will be captured from camera", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                         }
                     },
                     confirmButton = {
@@ -1069,7 +1011,7 @@ fun FieldForceApp(
                 val task = allTasks.find { it.id == taskId } ?: return@let
                 var showSignatureArea by remember { mutableStateOf(false) }
                 var signaturePathData by remember { mutableStateOf<Path?>(null) }
-                var viewSelfieLink by remember { mutableStateOf("https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=128&q=80") }
+                var viewSelfieLink by remember { mutableStateOf("") } // Will use actual visit photo
 
                 AlertDialog(
                     onDismissRequest = { showTaskDetailsId = null },

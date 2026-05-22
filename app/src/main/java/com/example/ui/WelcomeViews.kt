@@ -449,7 +449,7 @@ fun WelcomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
-                    .clickable { viewModel.loginWithId("admin_1") }
+                    .clickable { viewModel.loginWithId("user_admin_001") }
                     .testTag("quick_login_admin")
             ) {
                 Row(
@@ -468,7 +468,7 @@ fun WelcomeScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text("Arthur Pendragon", color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                        Text("Global Supervisor layout (Admin)", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 11.sp)
+                        Text("admin@fieldforce.pro (Admin)", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 11.sp)
                     }
                     Text(
                         text = "ADMIN",
@@ -490,7 +490,7 @@ fun WelcomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
-                    .clickable { viewModel.loginWithId("manager_1") }
+                    .clickable { viewModel.loginWithId("user_manager_001") }
                     .testTag("quick_login_manager")
             ) {
                 Row(
@@ -509,7 +509,7 @@ fun WelcomeScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text("Morgan LeFay", color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                        Text("Operations Manager layout (Manager)", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 11.sp)
+                        Text("morgan.lefay@fieldforce.pro (Manager)", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 11.sp)
                     }
                     Text(
                         text = "MANAGER",
@@ -531,7 +531,7 @@ fun WelcomeScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 4.dp)
-                    .clickable { viewModel.loginWithId("exec_1") }
+                    .clickable { viewModel.loginWithId("user_exec_001") }
                     .testTag("quick_login_exec")
             ) {
                 Row(
@@ -550,7 +550,7 @@ fun WelcomeScreen(
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text("Lancelot DuLac", color = MaterialTheme.colorScheme.onSurface, fontWeight = FontWeight.Bold, fontSize = 13.sp)
-                        Text("Field Operations layout (Executive)", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 11.sp)
+                        Text("lancelot.dulac@fieldforce.pro (Executive)", color = MaterialTheme.colorScheme.onSurfaceVariant, fontSize = 11.sp)
                     }
                     Text(
                         text = "EXECUTIVE",

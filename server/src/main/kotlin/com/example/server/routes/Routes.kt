@@ -397,41 +397,41 @@ private fun upsertAttendance(att: AttendanceDto): Int {
         Attendances.selectAll().where { Attendances.id eq att.id }.firstOrNull()
     } else {
         // Also fallback to find active session for employee if checking out
-        Attendances.selectAll().where { (Attendances.employeeId eq att.employeeId) and Attendances.checkOutTime.isNull() }
+        Attendances.selectAll().where { (Attendances.employeeId eq att.employeeId) and (Attendances.checkOutTime.isNull()) }
             .orderBy(Attendances.checkInTime to SortOrder.DESC).firstOrNull()
     }
 
     return if (existing != null) {
         val exId = existing[Attendances.id]
         Attendances.update({ Attendances.id eq exId }) {
-            it[employeeId] = att.employeeId
-            it[checkInTime] = att.checkInTime
-            if (att.checkOutTime != null) it[checkOutTime] = att.checkOutTime
-            it[checkInLat] = att.checkInLat
-            it[checkInLng] = att.checkInLng
-            it[checkInSelfieUri] = att.checkInSelfieUri
-            it[checkInNote] = att.checkInNote
-            if (att.checkOutNote != null) it[checkOutNote] = att.checkOutNote
-            it[checkOutTasksCompleted] = att.checkOutTasksCompleted
-            it[checkOutExpenses] = att.checkOutExpenses
-            it[isSyncedOffline] = true // synced now!
-            it[isOutsideGeofence] = att.isOutsideGeofence
+            it[Attendances.employeeId] = att.employeeId
+            it[Attendances.checkInTime] = att.checkInTime
+            if (att.checkOutTime != null) it[Attendances.checkOutTime] = att.checkOutTime
+            it[Attendances.checkInLat] = att.checkInLat
+            it[Attendances.checkInLng] = att.checkInLng
+            it[Attendances.checkInSelfieUri] = att.checkInSelfieUri
+            it[Attendances.checkInNote] = att.checkInNote
+            if (att.checkOutNote != null) it[Attendances.checkOutNote] = att.checkOutNote
+            it[Attendances.checkOutTasksCompleted] = att.checkOutTasksCompleted
+            it[Attendances.checkOutExpenses] = att.checkOutExpenses
+            it[Attendances.isSyncedOffline] = true // synced now!
+            it[Attendances.isOutsideGeofence] = att.isOutsideGeofence
         }
         exId
     } else {
         Attendances.insert {
-            it[employeeId] = att.employeeId
-            it[checkInTime] = att.checkInTime
-            it[checkOutTime] = att.checkOutTime
-            it[checkInLat] = att.checkInLat
-            it[checkInLng] = att.checkInLng
-            it[checkInSelfieUri] = att.checkInSelfieUri
-            it[checkInNote] = att.checkInNote
-            it[checkOutNote] = att.checkOutNote
-            it[checkOutTasksCompleted] = att.checkOutTasksCompleted
-            it[checkOutExpenses] = att.checkOutExpenses
-            it[isSyncedOffline] = true
-            it[isOutsideGeofence] = att.isOutsideGeofence
+            it[Attendances.employeeId] = att.employeeId
+            it[Attendances.checkInTime] = att.checkInTime
+            it[Attendances.checkOutTime] = att.checkOutTime
+            it[Attendances.checkInLat] = att.checkInLat
+            it[Attendances.checkInLng] = att.checkInLng
+            it[Attendances.checkInSelfieUri] = att.checkInSelfieUri
+            it[Attendances.checkInNote] = att.checkInNote
+            it[Attendances.checkOutNote] = att.checkOutNote
+            it[Attendances.checkOutTasksCompleted] = att.checkOutTasksCompleted
+            it[Attendances.checkOutExpenses] = att.checkOutExpenses
+            it[Attendances.isSyncedOffline] = true
+            it[Attendances.isOutsideGeofence] = att.isOutsideGeofence
         } get Attendances.id
     }
 }
@@ -443,41 +443,41 @@ private fun upsertTask(task: TaskDto): Int {
 
     return if (existing != null) {
         Tasks.update({ Tasks.id eq task.id }) {
-            it[title] = task.title
-            it[description] = task.description
-            it[priority] = task.priority
-            it[dueDate] = task.dueDate
-            it[locationAddress] = task.locationAddress
-            it[locationLat] = task.locationLat
-            it[locationLng] = task.locationLng
-            it[status] = task.status
-            it[assignedTo] = task.assignedTo
-            it[assignedByName] = task.assignedByName
-            it[actualStart] = task.actualStart
-            it[actualEnd] = task.actualEnd
-            it[proofPhotoUri] = task.proofPhotoUri
-            it[proofSignatureBase64] = task.proofSignatureBase64
-            it[managerFeedback] = task.managerFeedback
+            it[Tasks.title] = task.title
+            it[Tasks.description] = task.description
+            it[Tasks.priority] = task.priority
+            it[Tasks.dueDate] = task.dueDate
+            it[Tasks.locationAddress] = task.locationAddress
+            it[Tasks.locationLat] = task.locationLat
+            it[Tasks.locationLng] = task.locationLng
+            it[Tasks.status] = task.status
+            it[Tasks.assignedTo] = task.assignedTo
+            it[Tasks.assignedByName] = task.assignedByName
+            it[Tasks.actualStart] = task.actualStart
+            it[Tasks.actualEnd] = task.actualEnd
+            it[Tasks.proofPhotoUri] = task.proofPhotoUri
+            it[Tasks.proofSignatureBase64] = task.proofSignatureBase64
+            it[Tasks.managerFeedback] = task.managerFeedback
         }
         task.id
     } else {
         Tasks.insert {
-            if (task.id > 0) it[id] = task.id
-            it[title] = task.title
-            it[description] = task.description
-            it[priority] = task.priority
-            it[dueDate] = task.dueDate
-            it[locationAddress] = task.locationAddress
-            it[locationLat] = task.locationLat
-            it[locationLng] = task.locationLng
-            it[status] = task.status
-            it[assignedTo] = task.assignedTo
-            it[assignedByName] = task.assignedByName
-            it[actualStart] = task.actualStart
-            it[actualEnd] = task.actualEnd
-            it[proofPhotoUri] = task.proofPhotoUri
-            it[proofSignatureBase64] = task.proofSignatureBase64
-            it[managerFeedback] = task.managerFeedback
+            if (task.id > 0) it[Tasks.id] = task.id
+            it[Tasks.title] = task.title
+            it[Tasks.description] = task.description
+            it[Tasks.priority] = task.priority
+            it[Tasks.dueDate] = task.dueDate
+            it[Tasks.locationAddress] = task.locationAddress
+            it[Tasks.locationLat] = task.locationLat
+            it[Tasks.locationLng] = task.locationLng
+            it[Tasks.status] = task.status
+            it[Tasks.assignedTo] = task.assignedTo
+            it[Tasks.assignedByName] = task.assignedByName
+            it[Tasks.actualStart] = task.actualStart
+            it[Tasks.actualEnd] = task.actualEnd
+            it[Tasks.proofPhotoUri] = task.proofPhotoUri
+            it[Tasks.proofSignatureBase64] = task.proofSignatureBase64
+            it[Tasks.managerFeedback] = task.managerFeedback
         } get Tasks.id
     }
 }
@@ -489,33 +489,33 @@ private fun upsertVisit(visit: VisitDto): Int {
 
     return if (existing != null) {
         Visits.update({ Visits.id eq visit.id }) {
-            it[executiveId] = visit.executiveId
-            it[customerName] = visit.customerName
-            it[address] = visit.address
-            it[checkInTime] = visit.checkInTime
-            it[checkOutTime] = visit.checkOutTime
-            it[notes] = visit.notes
-            it[latitude] = visit.latitude
-            it[longitude] = visit.longitude
-            it[signatureBase64] = visit.signatureBase64
-            it[photoUri] = visit.photoUri
-            it[reportPdfName] = visit.reportPdfName
+            it[Visits.executiveId] = visit.executiveId
+            it[Visits.customerName] = visit.customerName
+            it[Visits.address] = visit.address
+            it[Visits.checkInTime] = visit.checkInTime
+            it[Visits.checkOutTime] = visit.checkOutTime
+            it[Visits.notes] = visit.notes
+            it[Visits.latitude] = visit.latitude
+            it[Visits.longitude] = visit.longitude
+            it[Visits.signatureBase64] = visit.signatureBase64
+            it[Visits.photoUri] = visit.photoUri
+            it[Visits.reportPdfName] = visit.reportPdfName
         }
         visit.id
     } else {
         Visits.insert {
-            if (visit.id > 0) it[id] = visit.id
-            it[executiveId] = visit.executiveId
-            it[customerName] = visit.customerName
-            it[address] = visit.address
-            it[checkInTime] = visit.checkInTime
-            it[checkOutTime] = visit.checkOutTime
-            it[notes] = visit.notes
-            it[latitude] = visit.latitude
-            it[longitude] = visit.longitude
-            it[signatureBase64] = visit.signatureBase64
-            it[photoUri] = visit.photoUri
-            it[reportPdfName] = visit.reportPdfName
+            if (visit.id > 0) it[Visits.id] = visit.id
+            it[Visits.executiveId] = visit.executiveId
+            it[Visits.customerName] = visit.customerName
+            it[Visits.address] = visit.address
+            it[Visits.checkInTime] = visit.checkInTime
+            it[Visits.checkOutTime] = visit.checkOutTime
+            it[Visits.notes] = visit.notes
+            it[Visits.latitude] = visit.latitude
+            it[Visits.longitude] = visit.longitude
+            it[Visits.signatureBase64] = visit.signatureBase64
+            it[Visits.photoUri] = visit.photoUri
+            it[Visits.reportPdfName] = visit.reportPdfName
         } get Visits.id
     }
 }
@@ -527,35 +527,35 @@ private fun upsertFileRecord(fileRec: FileRecordDto): Int {
 
     return if (existing != null) {
         FileRecords.update({ FileRecords.id eq fileRec.id }) {
-            it[fileName] = fileRec.fileName
-            it[category] = fileRec.category
-            it[fileUri] = fileRec.fileUri
-            it[uploadedBy] = fileRec.uploadedBy
-            it[uploadedByName] = fileRec.uploadedByName
-            it[timestamp] = fileRec.timestamp
-            it[latitude] = fileRec.latitude
-            it[longitude] = fileRec.longitude
-            it[tags] = fileRec.tags
-            it[amount] = fileRec.amount
-            it[status] = fileRec.status
-            it[rejectionReason] = fileRec.rejectionReason
+            it[FileRecords.fileName] = fileRec.fileName
+            it[FileRecords.category] = fileRec.category
+            it[FileRecords.fileUri] = fileRec.fileUri
+            it[FileRecords.uploadedBy] = fileRec.uploadedBy
+            it[FileRecords.uploadedByName] = fileRec.uploadedByName
+            it[FileRecords.timestamp] = fileRec.timestamp
+            it[FileRecords.latitude] = fileRec.latitude
+            it[FileRecords.longitude] = fileRec.longitude
+            it[FileRecords.tags] = fileRec.tags
+            it[FileRecords.amount] = fileRec.amount
+            it[FileRecords.status] = fileRec.status
+            it[FileRecords.rejectionReason] = fileRec.rejectionReason
         }
         fileRec.id
     } else {
         FileRecords.insert {
-            if (fileRec.id > 0) it[id] = fileRec.id
-            it[fileName] = fileRec.fileName
-            it[category] = fileRec.category
-            it[fileUri] = fileRec.fileUri
-            it[uploadedBy] = fileRec.uploadedBy
-            it[uploadedByName] = fileRec.uploadedByName
-            it[timestamp] = fileRec.timestamp
-            it[latitude] = fileRec.latitude
-            it[longitude] = fileRec.longitude
-            it[tags] = fileRec.tags
-            it[amount] = fileRec.amount
-            it[status] = fileRec.status
-            it[rejectionReason] = fileRec.rejectionReason
+            if (fileRec.id > 0) it[FileRecords.id] = fileRec.id
+            it[FileRecords.fileName] = fileRec.fileName
+            it[FileRecords.category] = fileRec.category
+            it[FileRecords.fileUri] = fileRec.fileUri
+            it[FileRecords.uploadedBy] = fileRec.uploadedBy
+            it[FileRecords.uploadedByName] = fileRec.uploadedByName
+            it[FileRecords.timestamp] = fileRec.timestamp
+            it[FileRecords.latitude] = fileRec.latitude
+            it[FileRecords.longitude] = fileRec.longitude
+            it[FileRecords.tags] = fileRec.tags
+            it[FileRecords.amount] = fileRec.amount
+            it[FileRecords.status] = fileRec.status
+            it[FileRecords.rejectionReason] = fileRec.rejectionReason
         } get FileRecords.id
     }
 }

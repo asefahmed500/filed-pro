@@ -1,3 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- App Name -->
     <string name="app_name">FieldForce Pro</string>
+
+    <!-- Auth Screen -->
+    <string name="auth_welcome_title">Welcome to FieldForce Pro</string>
+    <string name="auth_welcome_subtitle">Field Workforce Management System</string>
+    <string name="auth_email_hint">Enter email address</string>
+    <string name="auth_login_button">Login</string>
+    <string name="auth_signup_button">Sign Up</string>
+    <string name="auth_quick_login">Quick Login</string>
+
+    <!-- Roles -->
+    <string name="role_admin">Administrator</string>
+    <string name="role_manager">Manager</string>
+    <string name="role_executive">Field Executive</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_title">Dashboard</string>
+    <string name="dashboard_greeting">Good Day, %1$s!</string>
+    <string name="dashboard_work_zone">Active Sector Assignments: %1$s</string>
+    <string name="dashboard_shift_tracker">Today\'s Shift Tracker</string>
+    <string name="dashboard_shift_active">Shift Active</string>
+    <string name="dashboard_shift_inactive">Off Shift (Checked-Out)</string>
+    <string name="dashboard_checkin_button">Check-In with Selfie</string>
+    <string name="dashboard_checkout_button">Check-Out (End of Day Duties)</string>
+    <string name="dashboard_shift_history">Shift History Logs</string>
+    <string name="dashboard_no_shifts">No shifts logged yet. Complete a checkout to view logs here.</string>
+
+    <!-- Tasks -->
+    <string name="tasks_title">Tasks</string>
+    <string name="tasks_assigned">Assigned Tasks</string>
+    <string name="tasks_all">All Tasks</string>
+    <string name="tasks_no_tasks">No assigned tasks at this time.</string>
+    <string name="tasks_priority_high">HIGH Priority</string>
+    <string name="tasks_priority_medium">MEDIUM Priority</string>
+    <string name="tasks_priority_low">LOW Priority</string>
+    <string name="tasks_status_pending">PENDING</string>
+    <string name="tasks_status_in_progress">IN PROGRESS</string>
+    <string name="tasks_status_completed">COMPLETED</string>
+    <string name="tasks_status_rejected">REJECTED</string>
+    <string name="tasks_assign_button">Assign Job</string>
+    <string name="tasks_empty">No tasks found</string>
+
+    <!-- Attendance -->
+    <string name="attendance_title">Attendance</string>
+    <string name="attendance_checkin_title">Daily Attendance Check-In</string>
+    <string name="attendance_checkout_title">End Of Day Shift Summary</string>
+    <string name="attendance_note_hint">Add comment...</string>
+    <string name="attendance_note_default">Starting Shift</string>
+    <string name="attendance_geofence_inside">Inside working sector limits.</string>
+    <string name="attendance_geofence_outside">GEOFENCE OUTSIDE SECTOR!</string>
+    <string name="attendance_distance">Current distance: %1$.1fm to Zone Center coordinates.</string>
+    <string name="attendance_eod_hint">Comments regarding tasks worked...</string>
+    <string name="attendance_tasks_label">Total Tasks Completed Today</string>
+    <string name="attendance_expenses_label">Log Reimbursable Miscellaneous Expenses ($)</string>
+    <string name="attendance_confirm_checkin">Confirm Check-In</string>
+    <string name="attendance_confirm_checkout">Check Out &amp; Sync</string>
+
+    <!-- Visits -->
+    <string name="visits_title">Customer Visits</string>
+    <string name="visits_start_title">Customer Check-In Verified Site Action Required</string>
+    <string name="visits_start_desc">Visiting clients requires real-time geolocated checkin selfie verifying services actioned on premise.</string>
+    <string name="visits_launch_button">Launch Customer Check-In</string>
+    <string name="visits_active">Active Visit: %1$s</string>
+    <string name="visits_notes_hint">Log Meeting Notes / Solutions Delivered</string>
+    <string name="visits_sign_pad">Customer Sign Off Pad</string>
+    <string name="visits_complete_button">Check Out &amp; Draw PDF Report</string>
+    <string name="visits_no_visits">No recorded visits list historical logs available.</string>
+    <string name="visits_timeline">Visit Logs Timeline</string>
+
+    <!-- Files -->
+    <string name="files_title">Files</string>
+    <string name="files_center_title">Voucher Receipts &amp; POD Center</string>
+    <string name="files_center_desc">Upload and track expenses, incident reports &amp; log sheets</string>
+    <string name="files_search_hint">Filter by Name, Tags, or Waypoint Reference</string>
+    <string name="files_category_all">ALL</string>
+    <string name="files_category_expense">EXPENSE</string>
+    <string name="files_category_pod">POD</string>
+    <string name="files_category_incident">INCIDENT</string>
+    <string name="files_category_timesheet">TIMESHEET</string>
+    <string name="files_submit_button">Submit File</string>
+    <string name="files_no_files">No files or documents match filter search.</string>
+    <string name="files_status_pending">PENDING</string>
+    <string name="files_status_approved">APPROVED</string>
+    <string name="files_status_rejected">REJECTED</string>
+    <string name="files_empty">No files found</string>
+
+    <!-- Map -->
+    <string name="map_title">Field Force Live Asset Grid</string>
+    <string name="map_desc">Displays real-time geo-locations &amp; active work sector limits</string>
+    <string name="map_gps_title">Live GPS Walk Simulator</string>
+    <string name="map_sector_center">Sector Center (Work zone ready)</string>
+    <string name="map_out_of_zone">Out of Zone</string>
+    <string name="map_coords">Current Coords: %1$s, %2$s</string>
+
+    <!-- Notifications -->
+    <string name="notifications_title">Notifications</string>
+    <string name="notifications_center">Notifications Center</string>
+    <string name="notifications_mark_all">Mark all Read</string>
+    <string name="notifications_empty">All clear! No pending alerts.</string>
+    <string name="notifications_dismiss">Dismiss</string>
+
+    <!-- Dialogs -->
+    <string name="dialog_cancel">Cancel</string>
+    <string name="dialog_confirm">Confirm</string>
+    <string name="dialog_submit">Submit</string>
+    <string name="dialog_delete">Delete</string>
+    <string name="dialog_approve">Approve</string>
+    <string name="dialog_reject">Reject</string>
+    <string name="dialog_save">Save</string>
+
+    <!-- Common -->
+    <string name="common_loading">Loading...</string>
+    <string name="common_error">An error occurred</string>
+    <string name="common_retry">Retry</string>
+    <string name="common_ok">OK</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    <string name="common_close">Close</string>
+    <string name="common_save">Save</string>
+    <string name="common_delete">Delete</string>
+    <string name="common_edit">Edit</string>
+    <string name="common_view">View</string>
+    <string name="common_search">Search</string>
+    <string name="common_filter">Filter</string>
+    <string name="common_sort">Sort</string>
+    <string name="common_refresh">Refresh</string>
+    <string name="common_settings">Settings</string>
+    <string name="common_profile">Profile</string>
+    <string name="common_logout">Logout</string>
+
+    <!-- Errors -->
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_validation">Validation error. Please check your input.</string>
+    <string name="error_auth">Authentication failed. Please try again.</string>
+    <string name="error_permission">Permission required. Please enable in settings.</string>
+    <string name="error_database">Database error. Please try again.</string>
+    <string name="error_unknown">An unexpected error occurred.</string>
+
+    <!-- Success Messages -->
+    <string name="success_login">Login successful!</string>
+    <string name="success_logout">Logged out successfully.</string>
+    <string name="success_checkin">Check-in successful!</string>
+    <string name="success_checkout">Check-out successful!</string>
+    <string name="success_sync">Sync complete!</string>
+    <string name="success_file_submitted">Document submitted successfully!</string>
+    <string name="success_task_assigned">Task assigned successfully!</string>
+
+    <!-- GPS Simulator -->
+    <string name="gps_sim_title">Live GPS Walk Simulator</string>
+    <string name="gps_sim_inside">Inside sector</string>
+    <string name="gps_sim_outside">OutOfBounds</string>
+    <string name="gps_sim_desc">Use slider walk tool to shift coordinates inside or outside the verified zone limits.</string>
+
+    <!-- Tabs -->
+    <string name="tab_dashboard">Dashboard</string>
+    <string name="tab_tasks">Tasks</string>
+    <string name="tab_visits">Visits</string>
+    <string name="tab_files">Files</string>
+    <string name="tab_map">Map</string>
+    <string name="tab_settings">Settings</string>
+
+    <!-- Content Descriptions -->
+    <string name="cd_avatar">User avatar</string>
+    <string name="cd_checkin">Check in</string>
+    <string name="cd_checkout">Check out</string>
+    <string name="cd_menu">Menu</string>
+    <string name="cd_notifications">Notifications</string>
+    <string name="cd_profile">Profile</string>
+    <string name="cd_settings">Settings</string>
+    <string name="cd_logout">Logout</string>
+    <string name="cd_refresh">Refresh</string>
+    <string name="cd_add">Add</string>
+    <string name="cd_close">Close</string>
+    <string name="cd_expand">Expand</string>
+    <string name="cd_collapse">Collapse</string>
 </resources>

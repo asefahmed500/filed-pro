@@ -91,7 +91,7 @@ interface FieldForceApiService {
     suspend fun syncOfflineData(@Body payload: SyncPayload): Response<SyncResponse>
 
     companion object {
-        private const val BASE_URL = "http://10.0.2.2:8080/"
+        private const val BASE_URL = "http://10.0.2.2:8081/"
 
         fun create(): FieldForceApiService {
             val logging = HttpLoggingInterceptor().apply {

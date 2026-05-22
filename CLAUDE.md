@@ -9,7 +9,7 @@ FieldForce Pro is a field workforce management application with an Android clien
 ## Build & Run Commands
 
 ```bash
-# Backend (Ktor/Netty on port 8080)
+# Backend (Ktor/Netty on port 8081)
 ./gradlew :server:run
 
 # Android app
@@ -42,7 +42,7 @@ FieldForce Pro is a field workforce management application with an Android clien
 - **Room local DB** mirrors PostgreSQL for offline capability
 - **`FieldForceRepository`** (`Repository.kt`): tries remote first via Retrofit, falls back to local Room DB
 - **Offline queue** buffers mutations when offline, syncs via `POST /api/sync`
-- **Retrofit BASE_URL**: `http://10.0.2.2:8080/` (Android emulator → host loopback)
+- **Retrofit BASE_URL**: `http://10.0.2.2:8081/` (Android emulator → host loopback)
 
 ### Database
 - **Server**: PostgreSQL + Exposed ORM. Default: `postgres`/`postgres` @ `jdbc:postgresql://localhost:5432/fieldforce`

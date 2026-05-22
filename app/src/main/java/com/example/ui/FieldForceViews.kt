@@ -1,5 +1,6 @@
 package com.example.ui
 
+import com.example.R
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -26,6 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import androidx.compose.ui.platform.LocalContext
 import com.example.data.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -85,7 +88,10 @@ fun DashboardView(
                     ) {
                         Box(contentAlignment = Alignment.BottomEnd) {
                             AsyncImage(
-                                model = currentUser?.photoUri ?: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80",
+                                model = ImageRequest.Builder(LocalContext.current)
+                                    .data(currentUser?.photoUri ?: "ic_default_avatar")
+                                    .crossfade(true)
+                                    .build(),
                                 contentDescription = "Avatar",
                                 contentScale = ContentScale.Crop,
                                 modifier = Modifier
@@ -842,7 +848,7 @@ fun TasksAndVisitsView(
                                                 visit = activeVisit,
                                                 notes = visitTextNote.ifEmpty { "Work checklist cleared on customer site successfully." },
                                                 signatureBase64 = if (hasSignedClient) "ClientSignatureData" else null,
-                                                photoUri = "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=128&q=80"
+                                                photoUri = null // Will be captured from camera
                                             )
                                         },
                                         colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
@@ -975,7 +981,7 @@ fun TasksAndVisitsView(
                                 address = clientAddr.ifEmpty { "Custom coordinates waypoint SF" },
                                 lat = simulatedLat,
                                 lng = simulatedLng,
-                                selfieUri = "https://images.unsplash.com/photo-1540569014015-19a7be504e3a?auto=format&fit=crop&w=128&q=80"
+                                selfieUri = null // Will be captured from camera
                             )
                             showStartVisitDialog = false
                         }
@@ -1161,7 +1167,7 @@ fun FileTrackingCenterView(
 
     // Modal popup for Manager/Admin to approve or reject document uploads
     reviewFileSelected?.let { file ->
-        val photoLink = "https://images.unsplash.com/photo-1554415707-6e8cfc93fe23?auto=format&fit=crop&w=128&q=80"
+        val photoLink = file.fileUri
         AlertDialog(
             onDismissRequest = { reviewFileSelected = null },
             title = { Text("Audit Request: ${file.fileName}") },

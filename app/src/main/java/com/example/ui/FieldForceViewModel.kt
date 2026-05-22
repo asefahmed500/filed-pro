@@ -72,14 +72,23 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
         if (user != null) repository.getNotificationsForUser(user.id) else flowOf(emptyList())
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    // Queue of offline items to sync when going back online
-    private val offlineAttendanceQueue = mutableListOf<Attendance>()
-    private val offlineTaskQueue = mutableListOf<Task>()
-    private val offlineVisitQueue = mutableListOf<Visit>()
-    private val offlineFileQueue = mutableListOf<FileRecord>()
+    // Pending sync items from persistent queue
+    val pendingSyncItems: StateFlow<List<SyncQueueItem>> = repository.getPendingSyncItems()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     init {
-        // Welcoming starting state. User will land on the beautiful Signup/Login welcome Home screen.
+        // Fetch initial data from server
+        refreshFromServer()
+    }
+
+    // Fetch all data from server
+    fun refreshFromServer() = viewModelScope.launch {
+        try {
+            repository.refreshFromServer()
+        } catch (e: Exception) {
+            // Server might not be available, that's ok - we'll work offline
+            showToast("Working offline - server not available")
+        }
     }
 
     fun logout() = viewModelScope.launch {
@@ -118,9 +127,9 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             role = role.uppercase(), // "ADMIN", "MANAGER", "EXECUTIVE"
             phone = phone.trim(),
             photoUri = when (role.uppercase()) {
-                "ADMIN" -> "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
-                "MANAGER" -> "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&q=80"
-                else -> "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80"
+                "ADMIN" -> "ic_admin_avatar"
+                "MANAGER" -> "ic_manager_avatar"
+                else -> "ic_executive_avatar"
             },
             reportingManagerId = if (role.uppercase() == "EXECUTIVE") "manager_1" else if (role.uppercase() == "MANAGER") "admin_1" else null,
             workZoneName = workZone.ifEmpty { "Default Sector" },
@@ -152,9 +161,9 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             role = role.uppercase(), // "ADMIN", "MANAGER", "EXECUTIVE"
             phone = phone.trim(),
             photoUri = when (role.uppercase()) {
-                "ADMIN" -> "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=256&q=80"
-                "MANAGER" -> "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=256&q=80"
-                else -> "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=256&q=80"
+                "ADMIN" -> "ic_admin_avatar"
+                "MANAGER" -> "ic_manager_avatar"
+                else -> "ic_executive_avatar"
             },
             reportingManagerId = if (role.uppercase() == "EXECUTIVE") "manager_1" else if (role.uppercase() == "MANAGER") "admin_1" else null,
             workZoneName = workZone.ifEmpty { "Default Sector" },
@@ -187,56 +196,54 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     private fun syncOfflineData() = viewModelScope.launch {
-        var syncCount = 0
-        if (offlineAttendanceQueue.isNotEmpty()) {
-            offlineAttendanceQueue.forEach {
-                repository.insertAttendance(it.copy(isSyncedOffline = true))
-                syncCount++
+        try {
+            // Process all pending items from the persistent sync queue
+            val result = repository.processPendingSyncItems()
+            if (result.isSuccess) {
+                showToast(result.getOrNull() ?: "Sync complete!")
+                // Also refresh data from server
+                repository.refreshFromServer()
+            } else {
+                showToast("Sync failed: ${result.exceptionOrNull()?.message}")
             }
-            offlineAttendanceQueue.clear()
-        }
-        if (offlineTaskQueue.isNotEmpty()) {
-            offlineTaskQueue.forEach {
-                repository.updateTask(it)
-                syncCount++
-            }
-            offlineTaskQueue.clear()
-        }
-        if (offlineVisitQueue.isNotEmpty()) {
-            offlineVisitQueue.forEach {
-                repository.insertVisit(it)
-                syncCount++
-            }
-            offlineVisitQueue.clear()
-        }
-        if (offlineFileQueue.isNotEmpty()) {
-            offlineFileQueue.forEach {
-                repository.insertFileRecord(it)
-                syncCount++
-            }
-            offlineFileQueue.clear()
-        }
-
-        if (syncCount > 0) {
-            showToast("Network restored. Sync complete! Backed up $syncCount local operations.")
-        } else {
-            showToast("Connected to server.")
+        } catch (e: Exception) {
+            showToast("Sync error: ${e.message}")
         }
     }
 
     fun loginWithEmail(email: String) = viewModelScope.launch {
+        // First try to fetch from server
+        if (_isOnline.value) {
+            try {
+                repository.fetchUsersFromServer()
+            } catch (e: Exception) {
+                // Continue with local data if server fails
+            }
+        }
+
         val user = repository.getUserByEmail(email.trim().lowercase())
         if (user != null) {
             loginAs(user)
         } else {
-            showToast("User not found or invalid credentials.")
+            showToast("User not found. Please register or check your email.")
         }
     }
 
     fun loginWithId(userId: String) = viewModelScope.launch {
+        // First try to fetch from server
+        if (_isOnline.value) {
+            try {
+                repository.fetchUsersFromServer()
+            } catch (e: Exception) {
+                // Continue with local data if server fails
+            }
+        }
+
         val user = repository.getUserById(userId)
         if (user != null) {
             loginAs(user)
+        } else {
+            showToast("User not found. Please register first.")
         }
     }
 
@@ -273,12 +280,22 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             isSyncedOffline = _isOnline.value
         )
 
-        if (!_isOnline.value) {
-            offlineAttendanceQueue.add(attendance)
-            showToast("Checked in locally (Offline mode).")
+        if (_isOnline.value) {
+            // Try to sync to server first
+            val result = repository.syncAttendanceToServer(attendance)
+            if (result.isSuccess) {
+                showToast("Check-in successful and synced!")
+            } else {
+                // If sync fails, still save locally and add to sync queue
+                repository.insertAttendance(attendance)
+                showToast("Check-in saved locally (server sync failed).")
+            }
         } else {
+            // Offline mode: save locally and enqueue for sync
             repository.insertAttendance(attendance)
-            showToast("Check-in successful!")
+            // Enqueue for sync (using a simple JSON representation)
+            repository.enqueueForSync("attendance", attendance.id, "create", "{}")
+            showToast("Checked in locally (Offline mode).")
         }
 
         // Send Notification
@@ -318,18 +335,21 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             isSyncedOffline = _isOnline.value
         )
 
-        if (!_isOnline.value) {
-            // Find in local offline queue or replace
-            val idx = offlineAttendanceQueue.indexOfFirst { it.checkInTime == active.checkInTime }
-            if (idx != -1) {
-                offlineAttendanceQueue[idx] = updated
+        if (_isOnline.value) {
+            // Try to sync to server first
+            val result = repository.syncAttendanceToServer(updated)
+            if (result.isSuccess) {
+                showToast("Check-out successful and synced!")
             } else {
-                offlineAttendanceQueue.add(updated)
+                // If sync fails, still save locally
+                repository.updateAttendance(updated)
+                showToast("Check-out saved locally (server sync failed).")
             }
-            showToast("Checked out locally (Offline mode saved).")
         } else {
+            // Offline mode: save locally and enqueue for sync
             repository.updateAttendance(updated)
-            showToast("Check-out successful. Day summarized.")
+            repository.enqueueForSync("attendance", updated.id, "update", "{}")
+            showToast("Checked out locally (Offline mode saved).")
         }
 
         // Notify self & manager
@@ -393,12 +413,21 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             actualEnd = if (newStatus == "COMPLETED" || newStatus == "REJECTED") System.currentTimeMillis() else task.actualEnd
         )
 
-        if (!_isOnline.value) {
-            offlineTaskQueue.add(updated)
-            showToast("Task status updated locally (Offline Queue).")
+        if (_isOnline.value) {
+            // Try to sync to server first
+            val result = repository.syncTaskToServer(updated)
+            if (result.isSuccess) {
+                showToast("Task status synced to server: $newStatus.")
+            } else {
+                // If sync fails, still save locally
+                repository.updateTask(updated)
+                showToast("Task updated locally (server sync failed).")
+            }
         } else {
+            // Offline mode: save locally and enqueue for sync
             repository.updateTask(updated)
-            showToast("Task status updated to $newStatus.")
+            repository.enqueueForSync("task", updated.id, "update", "{}")
+            showToast("Task status updated locally (Offline Queue).")
         }
 
         // Notify reporting managers
@@ -428,12 +457,21 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             photoUri = selfieUri
         )
 
-        if (!_isOnline.value) {
-            offlineVisitQueue.add(visit)
-            showToast("Started customer visit locally (Offline).")
+        if (_isOnline.value) {
+            // Try to sync to server first
+            val result = repository.syncVisitToServer(visit)
+            if (result.isSuccess) {
+                showToast("Customer visit started and synced!")
+            } else {
+                // If sync fails, still save locally
+                repository.insertVisit(visit)
+                showToast("Visit started locally (server sync failed).")
+            }
         } else {
+            // Offline mode: save locally and enqueue for sync
             repository.insertVisit(visit)
-            showToast("Customer visit started.")
+            repository.enqueueForSync("visit", visit.id, "create", "{}")
+            showToast("Started customer visit locally (Offline).")
         }
 
         repository.insertNotification(
@@ -459,12 +497,21 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             reportPdfName = reportName
         )
 
-        if (!_isOnline.value) {
-            offlineVisitQueue.add(updated)
-            showToast("Visit ended locally (Report compiled).")
+        if (_isOnline.value) {
+            // Try to sync to server first
+            val result = repository.syncVisitToServer(updated)
+            if (result.isSuccess) {
+                showToast("Visit completed and synced! PDF Report saved.")
+            } else {
+                // If sync fails, still save locally
+                repository.updateVisit(updated)
+                showToast("Visit ended locally (server sync failed).")
+            }
         } else {
+            // Offline mode: save locally and enqueue for sync
             repository.updateVisit(updated)
-            showToast("Visit completed successfully! PDF Report saved.")
+            repository.enqueueForSync("visit", updated.id, "update", "{}")
+            showToast("Visit ended locally (Report compiled).")
         }
 
         repository.insertNotification(
@@ -503,12 +550,21 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             status = "PENDING"
         )
 
-        if (!_isOnline.value) {
-            offlineFileQueue.add(record)
-            showToast("Document saved locally (Sync on network restoral).")
+        if (_isOnline.value) {
+            // Try to sync to server first
+            val result = repository.syncFileRecordToServer(record)
+            if (result.isSuccess) {
+                showToast("Document filed and synced successfully!")
+            } else {
+                // If sync fails, still save locally
+                repository.insertFileRecord(record)
+                showToast("Document saved locally (server sync failed).")
+            }
         } else {
+            // Offline mode: save locally and enqueue for sync
             repository.insertFileRecord(record)
-            showToast("Document filed successfully.")
+            repository.enqueueForSync("file", record.id, "create", "{}")
+            showToast("Document saved locally (Sync on network restoral).")
         }
 
         repository.insertNotification(
@@ -524,12 +580,18 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
             repository.insertNotification(
                 NotificationModel(
                     userId = user.reportingManagerId,
-                    title = "New File Submission",
-                    description = "${user.name} submitted a new \"$category\" for reimbursement/view.",
+                    title = "Document Submitted",
+                    description = "${user.name} submitted $category: \"$fileName\".",
                     timestamp = System.currentTimeMillis()
                 )
             )
         }
+    }
+
+    // Helper function to format timestamps
+    fun formatDate(timestamp: Long): String {
+        val sdf = java.text.SimpleDateFormat("MMM dd, yyyy HH:mm", java.util.Locale.getDefault())
+        return sdf.format(java.util.Date(timestamp))
     }
 
     fun updateFileStatus(record: FileRecord, status: String, reason: String? = null) = viewModelScope.launch {
@@ -560,10 +622,5 @@ class FieldForceViewModel(application: Application) : AndroidViewModel(applicati
         val user = _currentUser.value ?: return@launch
         repository.markAllAsRead(user.id)
         showToast("All notifications marked as read.")
-    }
-
-    private fun formatDate(timestamp: Long): String {
-        val sdf = java.text.SimpleDateFormat("dd MMM yyyy, hh:mm a", java.util.Locale.getDefault())
-        return sdf.format(java.util.Date(timestamp))
     }
 }

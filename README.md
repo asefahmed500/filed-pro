@@ -121,7 +121,7 @@ cd server
 2. **Configuration**
    - Copy `.env.example` to `.env`
    - Configure database connection in `server/src/main/resources/application.conf`
-   - For Android emulator, server is accessible at `http://10.0.2.2:8080/`
+   - For Android emulator, server is accessible at `http://10.0.2.2:8081/`
    - For physical device, replace with your local IP address
 
 3. **Generate Debug Keystore** (if needed)
@@ -252,8 +252,8 @@ The app uses a comprehensive design system defined in `ui/design/AppDesign.kt`:
 ## 📊 Server API
 
 ### Base URL
-- Emulator: `http://10.0.2.2:8080/`
-- Device: `http://YOUR_LOCAL_IP:8080/`
+- Emulator: `http://10.0.2.2:8081/`
+- Device: `http://YOUR_LOCAL_IP:8081/`
 
 ### Endpoints
 

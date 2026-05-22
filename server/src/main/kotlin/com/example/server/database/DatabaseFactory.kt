@@ -154,16 +154,16 @@ object DatabaseFactory {
     ) {
         Users.insert {
             it[Users.id] = id
-            it[email] = email
-            it[name] = name
-            it[role] = role
-            it[phone] = phone
-            it[photoUri] = photoUri
-            it[reportingManagerId] = reportingManagerId
-            it[workZoneName] = workZoneName
-            it[workZoneLat] = workZoneLat
-            it[workZoneLng] = workZoneLng
-            it[workZoneRadiusMeters] = workZoneRadiusMeters
+            it[Users.email] = email
+            it[Users.name] = name
+            it[Users.role] = role
+            it[Users.phone] = phone
+            it[Users.photoUri] = photoUri
+            it[Users.reportingManagerId] = reportingManagerId
+            it[Users.workZoneName] = workZoneName
+            it[Users.workZoneLat] = workZoneLat
+            it[Users.workZoneLng] = workZoneLng
+            it[Users.workZoneRadiusMeters] = workZoneRadiusMeters
         }
     }
 
@@ -244,132 +244,132 @@ object DatabaseFactory {
         assignedByName: String
     ) {
         Tasks.insert {
-            it[title] = title
-            it[description] = description
-            it[priority] = priority
-            it[dueDate] = System.currentTimeMillis() + dueDateOffset
-            it[locationAddress] = locationAddress
-            it[locationLat] = locationLat
-            it[locationLng] = locationLng
-            it[status] = "PENDING"
-            it[assignedTo] = assignedTo
-            it[assignedByName] = assignedByName
+            it[Tasks.title] = title
+            it[Tasks.description] = description
+            it[Tasks.priority] = priority
+            it[Tasks.dueDate] = System.currentTimeMillis() + dueDateOffset
+            it[Tasks.locationAddress] = locationAddress
+            it[Tasks.locationLat] = locationLat
+            it[Tasks.locationLng] = locationLng
+            it[Tasks.status] = "PENDING"
+            it[Tasks.assignedTo] = assignedTo
+            it[Tasks.assignedByName] = assignedByName
         }
     }
 
     private fun seedSampleAttendance() {
         // Completed attendance for yesterday
         Attendances.insert {
-            it[employeeId] = "user_exec_001"
-            it[checkInTime] = System.currentTimeMillis() - 86400000
-            it[checkOutTime] = System.currentTimeMillis() - 72000000
-            it[checkInLat] = 37.3382
-            it[checkInLng] = -121.8863
-            it[checkInSelfieUri] = "/images/checkin_samples/sample_001.jpg"
-            it[checkInNote] = "Started shift on schedule"
-            it[checkOutNote] = "Completed 3 deliveries"
-            it[checkOutTasksCompleted] = 3
-            it[checkOutExpenses] = 15.50
-            it[isSyncedOffline] = true
-            it[isOutsideGeofence] = false
+            it[Attendances.employeeId] = "user_exec_001"
+            it[Attendances.checkInTime] = System.currentTimeMillis() - 86400000
+            it[Attendances.checkOutTime] = System.currentTimeMillis() - 72000000
+            it[Attendances.checkInLat] = 37.3382
+            it[Attendances.checkInLng] = -121.8863
+            it[Attendances.checkInSelfieUri] = "/images/checkin_samples/sample_001.jpg"
+            it[Attendances.checkInNote] = "Started shift on schedule"
+            it[Attendances.checkOutNote] = "Completed 3 deliveries"
+            it[Attendances.checkOutTasksCompleted] = 3
+            it[Attendances.checkOutExpenses] = 15.50
+            it[Attendances.isSyncedOffline] = true
+            it[Attendances.isOutsideGeofence] = false
         }
 
         // Another completed attendance
         Attendances.insert {
-            it[employeeId] = "user_exec_002"
-            it[checkInTime] = System.currentTimeMillis() - 86400000
-            it[checkOutTime] = System.currentTimeMillis() - 70000000
-            it[checkInLat] = 37.7749
-            it[checkInLng] = -122.4194
-            it[checkInSelfieUri] = "/images/checkin_samples/sample_002.jpg"
-            it[checkInNote] = "Morning shift start"
-            it[checkOutNote] = "All routes completed"
-            it[checkOutTasksCompleted] = 5
-            it[checkOutExpenses] = 0.0
-            it[isSyncedOffline] = true
-            it[isOutsideGeofence] = false
+            it[Attendances.employeeId] = "user_exec_002"
+            it[Attendances.checkInTime] = System.currentTimeMillis() - 86400000
+            it[Attendances.checkOutTime] = System.currentTimeMillis() - 70000000
+            it[Attendances.checkInLat] = 37.7749
+            it[Attendances.checkInLng] = -122.4194
+            it[Attendances.checkInSelfieUri] = "/images/checkin_samples/sample_002.jpg"
+            it[Attendances.checkInNote] = "Morning shift start"
+            it[Attendances.checkOutNote] = "All routes completed"
+            it[Attendances.checkOutTasksCompleted] = 5
+            it[Attendances.checkOutExpenses] = 0.0
+            it[Attendances.isSyncedOffline] = true
+            it[Attendances.isOutsideGeofence] = false
         }
     }
 
     private fun seedSampleVisits() {
         // Completed visit
         Visits.insert {
-            it[executiveId] = "user_exec_001"
-            it[customerName] = "St. Mary Hospital"
-            it[address] = "St. Mary Hospital, San Francisco"
-            it[checkInTime] = System.currentTimeMillis() - 90000000
-            it[checkOutTime] = System.currentTimeMillis() - 87000000
-            it[notes] = "Equipment delivered and installed. Administrator signed off on delivery."
-            it[latitude] = 37.7725
-            it[longitude] = -122.4533
-            it[signatureBase64] = "sample_signature_base64"
-            it[photoUri] = "/images/visit_samples/visit_001.jpg"
-            it[reportPdfName] = "VisitReport_StMaryHospital_${System.currentTimeMillis()}.pdf"
+            it[Visits.executiveId] = "user_exec_001"
+            it[Visits.customerName] = "St. Mary Hospital"
+            it[Visits.address] = "St. Mary Hospital, San Francisco"
+            it[Visits.checkInTime] = System.currentTimeMillis() - 90000000
+            it[Visits.checkOutTime] = System.currentTimeMillis() - 87000000
+            it[Visits.notes] = "Equipment delivered and installed. Administrator signed off on delivery."
+            it[Visits.latitude] = 37.7725
+            it[Visits.longitude] = -122.4533
+            it[Visits.signatureBase64] = "sample_signature_base64"
+            it[Visits.photoUri] = "/images/visit_samples/visit_001.jpg"
+            it[Visits.reportPdfName] = "VisitReport_StMaryHospital_${System.currentTimeMillis()}.pdf"
         }
 
         // Another completed visit
         Visits.insert {
-            it[executiveId] = "user_exec_002"
-            it[customerName] = "General Depot Store"
-            it[address] = "725 Mission St Site, San Francisco"
-            it[checkInTime] = System.currentTimeMillis() - 180000000
-            it[checkOutTime] = System.currentTimeMillis() - 175000000
-            it[notes] = "Inspection completed. No issues found."
-            it[latitude] = 37.7854
-            it[longitude] = -122.4011
-            it[signatureBase64] = "sample_signature_base64"
-            it[photoUri] = "/images/visit_samples/visit_002.jpg"
-            it[reportPdfName] = "VisitReport_GeneralDepot_${System.currentTimeMillis()}.pdf"
+            it[Visits.executiveId] = "user_exec_002"
+            it[Visits.customerName] = "General Depot Store"
+            it[Visits.address] = "725 Mission St Site, San Francisco"
+            it[Visits.checkInTime] = System.currentTimeMillis() - 180000000
+            it[Visits.checkOutTime] = System.currentTimeMillis() - 175000000
+            it[Visits.notes] = "Inspection completed. No issues found."
+            it[Visits.latitude] = 37.7854
+            it[Visits.longitude] = -122.4011
+            it[Visits.signatureBase64] = "sample_signature_base64"
+            it[Visits.photoUri] = "/images/visit_samples/visit_002.jpg"
+            it[Visits.reportPdfName] = "VisitReport_GeneralDepot_${System.currentTimeMillis()}.pdf"
         }
     }
 
     private fun seedSampleFileRecords() {
         // Expense record
         FileRecords.insert {
-            it[fileName] = "Gas Receipt - June 15"
-            it[category] = "EXPENSE"
-            it[fileUri] = "/images/receipts/receipt_001.jpg"
-            it[uploadedBy] = "user_exec_001"
-            it[uploadedByName] = "Lancelot DuLac"
-            it[timestamp] = System.currentTimeMillis() - 3600000
-            it[latitude] = 37.7749
-            it[longitude] = -122.4194
-            it[tags] = "transport, fuel, business"
-            it[amount] = 45.50
-            it[status] = "APPROVED"
-            it[rejectionReason] = null
+            it[FileRecords.fileName] = "Gas Receipt - June 15"
+            it[FileRecords.category] = "EXPENSE"
+            it[FileRecords.fileUri] = "/images/receipts/receipt_001.jpg"
+            it[FileRecords.uploadedBy] = "user_exec_001"
+            it[FileRecords.uploadedByName] = "Lancelot DuLac"
+            it[FileRecords.timestamp] = System.currentTimeMillis() - 3600000
+            it[FileRecords.latitude] = 37.7749
+            it[FileRecords.longitude] = -122.4194
+            it[FileRecords.tags] = "transport, fuel, business"
+            it[FileRecords.amount] = 45.50
+            it[FileRecords.status] = "APPROVED"
+            it[FileRecords.rejectionReason] = null
         }
 
         // POD record
         FileRecords.insert {
-            it[fileName] = "POD - Package #8821"
-            it[category] = "POD"
-            it[fileUri] = "/images/pods/pod_001.jpg"
-            it[uploadedBy] = "user_exec_002"
-            it[uploadedByName] = "Guinevere Row"
-            it[timestamp] = System.currentTimeMillis() - 7200000
-            it[latitude] = 37.7891
-            it[longitude] = -122.4014
-            it[tags] = "delivery, customer, signature"
-            it[amount] = null
-            it[status] = "PENDING"
-            it[rejectionReason] = null
+            it[FileRecords.fileName] = "POD - Package #8821"
+            it[FileRecords.category] = "POD"
+            it[FileRecords.fileUri] = "/images/pods/pod_001.jpg"
+            it[FileRecords.uploadedBy] = "user_exec_002"
+            it[FileRecords.uploadedByName] = "Guinevere Row"
+            it[FileRecords.timestamp] = System.currentTimeMillis() - 7200000
+            it[FileRecords.latitude] = 37.7891
+            it[FileRecords.longitude] = -122.4014
+            it[FileRecords.tags] = "delivery, customer, signature"
+            it[FileRecords.amount] = null
+            it[FileRecords.status] = "PENDING"
+            it[FileRecords.rejectionReason] = null
         }
 
         // Incident record
         FileRecords.insert {
-            it[fileName] = "Traffic Incident Report"
-            it[category] = "INCIDENT"
-            it[fileUri] = "/images/incidents/incident_001.jpg"
-            it[uploadedBy] = "user_exec_001"
-            it[uploadedByName] = "Lancelot DuLac"
-            it[timestamp] = System.currentTimeMillis() - 14400000
-            it[latitude] = 37.7755
-            it[longitude] = -122.4199
-            it[tags] = "incident, traffic, delay"
-            it[amount] = null
-            it[status] = "PENDING"
-            it[rejectionReason] = null
+            it[FileRecords.fileName] = "Traffic Incident Report"
+            it[FileRecords.category] = "INCIDENT"
+            it[FileRecords.fileUri] = "/images/incidents/incident_001.jpg"
+            it[FileRecords.uploadedBy] = "user_exec_001"
+            it[FileRecords.uploadedByName] = "Lancelot DuLac"
+            it[FileRecords.timestamp] = System.currentTimeMillis() - 14400000
+            it[FileRecords.latitude] = 37.7755
+            it[FileRecords.longitude] = -122.4199
+            it[FileRecords.tags] = "incident, traffic, delay"
+            it[FileRecords.amount] = null
+            it[FileRecords.status] = "PENDING"
+            it[FileRecords.rejectionReason] = null
         }
     }
 
@@ -378,21 +378,21 @@ object DatabaseFactory {
 
         executiveIds.forEach { execId ->
             Notifications.insert {
-                it[userId] = execId
-                it[title] = "Welcome to FieldForce Pro"
-                it[description] = "Complete your profile and set up your check-in preferences to get started."
-                it[timestamp] = System.currentTimeMillis()
-                it[isRead] = false
+                it[Notifications.userId] = execId
+                it[Notifications.title] = "Welcome to FieldForce Pro"
+                it[Notifications.description] = "Complete your profile and set up your check-in preferences to get started."
+                it[Notifications.timestamp] = System.currentTimeMillis()
+                it[Notifications.isRead] = false
             }
         }
 
         // Task assignment notification
         Notifications.insert {
-            it[userId] = "user_exec_001"
-            it[title] = "New Task Assigned"
-            it[description] = "You have been assigned a HIGH priority task: Deliver medical machinery"
-            it[timestamp] = System.currentTimeMillis() - 3600000
-            it[isRead] = false
+            it[Notifications.userId] = "user_exec_001"
+            it[Notifications.title] = "New Task Assigned"
+            it[Notifications.description] = "You have been assigned a HIGH priority task: Deliver medical machinery"
+            it[Notifications.timestamp] = System.currentTimeMillis() - 3600000
+            it[Notifications.isRead] = false
         }
     }
 
